@@ -113,3 +113,118 @@ export const App = () => {
   )
 }
 ```
+
+## 52 CSS でスタイリング
+
+- `src/App.css`を編集<br>
+
+```css:App.css
+body {
+  font-family: sans-serif;
+}
+
+input {
+  border-radius: 16px;
+  border: none;
+  padding: 6px 16px;
+  outline: none;
+}
+
+button {
+  border-radius: 16px;
+  border: none;
+  padding: 4px 16px;
+}
+
+button:hover {
+  background-color: #ff7fff;
+  color: #fff;
+  cursor: pointer;
+}
+
+li {
+  margin-right: 8px;
+}
+
+.incomplete-area {
+  background-color: #c6ffe2;
+  width: 400px;
+  min-height: 200px;
+  padding: 8px;
+  margin: 8px;
+  border-radius: 8px;
+}
+
+.complete-area {
+  background-color: #ffffe0;
+  width: 400px;
+  min-height: 200px;
+  padding: 8px;
+  margin: 8px;
+  border-radius: 8px;
+}
+
+.title {
+  text-align: center;
+  margin-top: 0;
+  font-weight: bold;
+  color: #666;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+}
+```
+
+- `src/index.js`を編集<br>
+
+```js:index.js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { App } from './App'
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+- `src/App.jsx`を編集<br>
+
+```jsx:App.jsx
+import './App.css'
+
+export const App = () => {
+  return (
+    <>
+      <div className="input-area">
+        <input placeholder="TODOを入力" />
+        <button>追加</button>
+      </div>
+      <div className="incomplete-area">
+        <p className="title">未完了のTODO</p>
+        <ul>
+          <div className="list-row">
+            <li>ああああ</li>
+            <button>完了</button>
+            <button>削除</button>
+          </div>
+          <div className="list-row">
+            <li>いいいい</li>
+            <button>完了</button>
+            <button>削除</button>
+          </div>
+        </ul>
+      </div>
+      <div className="complete-area">
+        <p className="title">完了のTODO</p>
+        <ul>
+          <div className="list-row">
+            <li>うううう</li>
+            <button>戻す</button>
+          </div>
+        </ul>
+      </div>
+    </>
+  )
+}
+```
