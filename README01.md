@@ -146,6 +146,15 @@ li {
   margin-right: 8px;
 }
 
+.input-area {
+  background-color: #c1ffff;
+  width: 400px;
+  height: 30px;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 8px;
+}
+
 .incomplete-area {
   background-color: #c6ffe2;
   width: 400px;
@@ -222,6 +231,60 @@ export const App = () => {
             <li>うううう</li>
             <button>戻す</button>
           </div>
+        </ul>
+      </div>
+    </>
+  )
+}
+```
+
+## 53 React での実装を意識したモックに変更<br>
+
+- `src/App.jsx`を編集<br>
+
+```jsx:App.jsx
+import { useState } from 'react'
+import './App.css'
+
+export const App = () => {
+  // 追加
+  const [incompleteTods, setIncompleteTodos] = useState([
+    'ああああ',
+    'いいいいい',
+  ])
+  const [completeTodos, setCompleteTodos] = useState(['ううううう'])
+  // ここまで
+  return (
+    <>
+      <div className="input-area">
+        <input placeholder="TODOを入力" />
+        <button>追加</button>
+      </div>
+      <div className="incomplete-area">
+        <p className="title">未完了のTODO</p>
+        <ul>
+          // ここから編集
+          {incompleteTods.map((todo) => (
+            <div key={todo} className="list-row">
+              <li>{todo}</li>
+              <button>完了</button>
+              <button>削除</button>
+            </div>
+          ))}
+          // ここまで
+        </ul>
+      </div>
+      <div className="complete-area">
+        <p className="title">完了のTODO</p>
+        <ul>
+          // ここから編集
+          {completeTodos.map((todo) => (
+            <div key={todo} className="list-row">
+              <li>{todo}</li>
+              <button>戻す</button>
+            </div>
+          ))}
+          // ここまで
         </ul>
       </div>
     </>
