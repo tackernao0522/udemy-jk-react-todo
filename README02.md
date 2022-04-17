@@ -371,3 +371,117 @@ export const InputTodo = (props) => {
   )
 }
 ```
+
+## 60 改善 TODO の上限設定
+
+- `src/App.jsx`を編集<br>
+
+```jsx:App.jsx
+import { useState } from 'react'
+import './App.css'
+import { CompleteTodos } from './components/CompleteTodos'
+import { IncompleteTodos } from './components/IncompleteTodos'
+import { InputTodo } from './components/InputTodo'
+
+export const App = () => {
+  const [todoText, setTodoText] = useState('')
+  const [incompleteTods, setIncompleteTodos] = useState([])
+  const [completeTodos, setCompleteTodos] = useState([])
+
+  const onChangeTodoText = (event) => setTodoText(event.target.value)
+
+  const onClickAdd = () => {
+    // alert(todoText)
+    if (todoText === '') return
+    const newTodos = [...incompleteTods, todoText]
+    setIncompleteTodos(newTodos)
+    setTodoText('')
+  }
+
+  const onClickDelete = (index) => {
+    // alert('削除!')
+    // alert(index)
+    const newTodos = [...incompleteTods]
+    newTodos.splice(index, 1)
+    setIncompleteTodos(newTodos)
+  }
+
+  const onClickComplete = (index) => {
+    // alert(index)
+    const newInCompleteTodos = [...incompleteTods]
+    newInCompleteTodos.splice(index, 1)
+
+    const newCompleteTodos = [...completeTodos, incompleteTods[index]]
+    setIncompleteTodos(newInCompleteTodos)
+    setCompleteTodos(newCompleteTodos)
+  }
+
+  const onClickBack = (index) => {
+    // alert(index)
+    const newCompleteTodos = [...completeTodos]
+    newCompleteTodos.splice(index, 1)
+
+    const newIncompleteTodos = [...incompleteTods, completeTodos[index]]
+    setCompleteTodos(newCompleteTodos)
+    setIncompleteTodos(newIncompleteTodos)
+  }
+
+  return (
+    <>
+      <InputTodo
+        todoText={todoText}
+        onChange={onChangeTodoText}
+        onClick={onClickAdd}
+        // 追加
+        disabled={incompleteTods.length >= 5}
+      />
+      // 編集
+      {incompleteTods.length >= 5 && (
+        <p style={{ color: 'red' }}>
+          登録できるtodoは5個までです。完了するか削除してください。
+        </p>
+      )}
+      // ここまで
+      <IncompleteTodos
+        todos={incompleteTods}
+        onClickComplete={onClickComplete}
+        onClickDelete={onClickDelete}
+      />
+      <CompleteTodos todos={completeTodos} onClickBack={onClickBack} />
+    </>
+  )
+}
+```
+
+- `src/components/InputTodo.jsx`を編集<br>
+
+```jsx:InputTodo.jsx
+const style = {
+  backgroundColor: '#c1ffff',
+  width: '400px',
+  height: '30px',
+  borderRadius: '8px',
+  padding: '8px',
+  margin: '8px',
+}
+
+export const InputTodo = (props) => {
+  // 編集
+  const { todoText, onChange, onClick, disabled } = props
+  return (
+    <div style={style}>
+      // 編集
+      <input
+        disabled={disabled}
+        placeholder="TODOを入力"
+        value={todoText}
+        onChange={onChange}
+      />
+      <button disabled={disabled} onClick={onClick}>
+        追加
+      </button>
+      // ここまで
+    </div>
+  )
+}
+```
